@@ -2,8 +2,6 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const transporter = require('../config/transporter.config');
-
 const isAuthenticated = require("../middlewares/isAuthenticated");
 const User = require("../models/User.model");
 
@@ -47,18 +45,6 @@ router.post("/signup", async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     await User.create({ username, email, password: hashedPassword });
-
-    const emailTo = await User.findOne({ email }).select("email");
-    
-    await transporter.sendMail({
-      from: process.env.GMAIL_USER,
-      to: emailTo.email,
-      subject: `Welcome to Finapay!`,
-      html: `<h1>Welcome to Finapay</h1>
-      <p>Thanks for joining us!</p>
-      <img src="https://res.cloudinary.com/ddaezutq8/image/upload/v1693738024/finapayLogoSinFondo_eiisg7.png" alt="finapay" width="400px" />
-      `,
-    });
 
     res.status(200).json("User created successfully");
   } catch (error) {
