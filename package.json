@@ -1,6 +1,6 @@
 {
-  "name": "finapay-server-server",
-  "version": "0.0.0",
+  "name": "simple-auth",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "start": "node server.js",
